@@ -63,15 +63,15 @@ Follow these steps to get the game running on your system:
 ```
 src/
 ├── com.projectoop1aiub.edu
-    ├── graphics
-    │   └── Animation, ScreenManager, Sprite
-    ├── input
-    │   └── GameAction, InputManager
-    ├── test
-    │   └── GameCore
-    └── tilegame
-        └── sprites
-            └── GameEngine, MapLoader, TileMap, TileMapDrawer
+    ├── main
+    │   ├── sprites
+    │   │   └── Catch, Fly, Obstacles, Player, PowerIncrease, GroundRendering, MainGameEngine, Map, Rendering
+    │   ├── physics
+    │   │   └── Anim, Character, ScreenRatio
+    │   ├── test
+    │   │   └── GameCore
+    │   └── user_input
+    │       └── GameReflex, Input_Initializer
 maps/
     └── Level configuration files (.txt)
 images/
@@ -91,7 +91,7 @@ images/
 - Update the `Sprite` and `TileMap` classes to use your new assets.
 
 ### Adding Features
-- Extend the `GameEngine` or `GameCore` classes to implement new gameplay mechanics.
+- Extend the `MainGameEngine` or `GameCore` classes to implement new gameplay mechanics.
 
 ---
 
