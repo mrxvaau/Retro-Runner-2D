@@ -2,6 +2,7 @@ package com.projectoop1aiub.edu.main;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.Iterator;
 
 
@@ -13,6 +14,10 @@ import com.projectoop1aiub.edu.test.GameCore;
 import com.projectoop1aiub.edu.main.gost.Obstacles;
 import com.projectoop1aiub.edu.main.gost.Player;
 import com.projectoop1aiub.edu.main.gost.PowerIncrease;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 /**
  * GameManager manages all parts of the game.
@@ -39,6 +44,7 @@ public class MainGameEngine extends GameCore
     private GameReflex exit;
     private int collectedStars=0;
     private int numLives=6;
+    private Clip openingMusic;
 
     public void init()
     {
@@ -56,9 +62,24 @@ public class MainGameEngine extends GameCore
 
         // load first map
         map = rendering.loadNextMap();
+        playOpeningMusic("audio/background_music_loop.wav");
     }
 
-
+    private void playOpeningMusic(String filePath) {
+        try {
+            File audioFile = new File(filePath);
+            if (!audioFile.exists()) {
+                System.err.println("Audio file not found: " + filePath);
+                return; // Continue without audio
+            }
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+            openingMusic = AudioSystem.getClip();
+            openingMusic.open(audioInputStream);
+            openingMusic.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            System.err.println("Error playing opening music: " + e.getMessage());
+        }
+    }
     /**
      * Closes any resurces used by the GameManager.
      */
