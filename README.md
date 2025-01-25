@@ -26,12 +26,12 @@ Follow these steps to get the game running on your system:
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/Arcade-Super-Mario-Type-Game.git
+   git clone https://https://github.com/mrxvaau/02564-OOP1_Project_Arcade_Java_2D_Game
    ```
 
 2. **Navigate to the Project Directory**:
    ```bash
-   cd Arcade-Super-Mario-Type-Game
+   cd 02564-OOP1_Project_Arcade_Java_2D_Game
    ```
 
 3. **Compile the Source Code**:
@@ -41,7 +41,7 @@ Follow these steps to get the game running on your system:
 
 4. **Run the Game**:
    ```bash
-   java -cp bin com.projectoop1aiub.edu.test.GameCore
+   java -cp bin com.projectoop1aiub.edu.test.GameMainEngine
    ```
 
 5. Enjoy the game!
@@ -64,7 +64,7 @@ Follow these steps to get the game running on your system:
 src/
 ├── com.projectoop1aiub.edu
     ├── main
-    │   ├── sprites
+    │   ├── gost
     │   │   └── Catch, Fly, Obstacles, Player, PowerIncrease, GroundRendering, MainGameEngine, Map, Rendering
     │   ├── physics
     │   │   └── Anim, Character, ScreenRatio
