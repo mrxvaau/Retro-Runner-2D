@@ -4,11 +4,11 @@ import java.awt.*;
 import java.util.Iterator;
 
 import com.projectoop1aiub.edu.physics.Charecter;
-import com.projectoop1aiub.edu.main.sprites.Obstacles;
+import com.projectoop1aiub.edu.main.gost.Obstacles;
 
 /**
     The TileMapRenderer class draws a TileMap on the screen.
-    It draws all tiles, sprites, and an optional background image
+    It draws all tiles, gost, and an optional background image
     centered around the position of the player.
 
     <p>If the width of background image is smaller the width of
@@ -89,7 +89,7 @@ public class GroundRendering
         offsetX = Math.min(offsetX, 0);
         offsetX = Math.max(offsetX, screenWidth - mapWidth);
 
-        // get the y offset to draw all sprites and tiles
+        // get the y offset to draw all gost and tiles
         int offsetY = screenHeight -
             tilesToPixels(map.getHeight());
 
@@ -134,7 +134,7 @@ public class GroundRendering
             Math.round(player.getY()) + offsetY,
             null);
 
-        // draw sprites
+        // draw gost
         Iterator i = map.getSprites();
         while (i.hasNext()) {
             Charecter charecter = (Charecter)i.next();

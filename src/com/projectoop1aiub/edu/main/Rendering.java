@@ -9,10 +9,10 @@ import javax.swing.ImageIcon;
 
 import com.projectoop1aiub.edu.physics.Anim;
 import com.projectoop1aiub.edu.physics.Charecter;
-import com.projectoop1aiub.edu.main.sprites.Fly;
-import com.projectoop1aiub.edu.main.sprites.Catch;
-import com.projectoop1aiub.edu.main.sprites.Player;
-import com.projectoop1aiub.edu.main.sprites.PowerIncrease;
+import com.projectoop1aiub.edu.main.gost.Fly;
+import com.projectoop1aiub.edu.main.gost.Catch;
+import com.projectoop1aiub.edu.main.gost.Player;
+import com.projectoop1aiub.edu.main.gost.PowerIncrease;
 
 
 /**
@@ -26,7 +26,7 @@ public class Rendering
     public int currentMap;
     private GraphicsConfiguration gc;
 
-    // host sprites used for cloning
+    // host gost used for cloning
     private Charecter playerCharecter;
     private Charecter musicCharecter;
     private Charecter coinCharecter;
@@ -226,7 +226,7 @@ public class Rendering
 
 
     // -----------------------------------------------------------
-    // code for loading sprites and images
+    // code for loading gost and images
     // -----------------------------------------------------------
 
 
@@ -292,7 +292,7 @@ public class Rendering
             grubAnim[i] = createGrubAnim (images[i][4], images[i][5]);
         }
 
-        // create creature sprites
+        // create creature gost
         playerCharecter = new Player(playerAnim[0], playerAnim[1],playerAnim[2], playerAnim[3]);
         flyCharecter = new Fly(flyAnim[0], flyAnim[1],flyAnim[2], flyAnim[3]);
         grubCharecter = new Catch(grubAnim[0], grubAnim[1],grubAnim[2], grubAnim[3]);
