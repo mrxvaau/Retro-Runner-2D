@@ -310,7 +310,7 @@ public class MainGameEngine extends GameCore
             if (dx > 0) {
                 obstacles.setX(
                         GroundRendering.tilesToPixels(tile.x) -
-                        obstacles.getWidth());
+                                obstacles.getWidth());
             } else if (dx < 0) {
                 obstacles.setX(
                         GroundRendering.tilesToPixels(tile.x + 1));
@@ -333,7 +333,7 @@ public class MainGameEngine extends GameCore
             if (dy > 0) {
                 obstacles.setY(
                         GroundRendering.tilesToPixels(tile.y) -
-                        obstacles.getHeight());
+                                obstacles.getHeight());
             } else if (dy < 0) {
                 obstacles.setY(
                         GroundRendering.tilesToPixels(tile.y + 1));
@@ -354,7 +354,7 @@ public class MainGameEngine extends GameCore
      * them.
      */
     public void checkPlayerCollision(Player player,
-            boolean canKill) {
+                                     boolean canKill) {
         if (!player.isAlive()) {
             return;
         }

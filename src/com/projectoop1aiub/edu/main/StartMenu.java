@@ -2,68 +2,179 @@ package com.projectoop1aiub.edu.main;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * StartMenu provides a starting point for the game.
- */
 public class StartMenu {
-
     private static final String PROMO_CODE_FILE = "promo_codes.txt";
+    private static final String BACKGROUND_PATH = "images/background.jpg";
+    private static final Dimension FRAME_SIZE = new Dimension(960, 540); // Half of 1920x1080
     private static boolean isPromoCodesGenerated = false;
-    private static boolean isPremiumUser = false;
     private Clip openingMusic;
+    private JFrame frame;
 
     public static void main(String[] args) {
         if (!isPromoCodesGenerated) {
             generatePromoCodes();
             isPromoCodesGenerated = true;
         }
-        new StartMenu().displayMenu();
+        SwingUtilities.invokeLater(() -> new StartMenu().displayMenu());
     }
 
     public void displayMenu() {
-        JFrame frame = new JFrame("Start Menu");
+        frame = new JFrame("Game Launcher");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize(FRAME_SIZE);
+        frame.setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 1));
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        JButton startGameButton = new JButton("Start Game");
-        JButton highScoreButton = new JButton("Highscore");
-        JButton optionsButton = new JButton("Options");
-        JButton buyPremiumButton = new JButton("Buy Premium");
-        JButton exitButton = new JButton("Exit");
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(FRAME_SIZE);
 
-        startGameButton.addActionListener(e -> startGame());
+        // Background Image Handling
+        try {
+            Image backgroundImage = new ImageIcon(BACKGROUND_PATH).getImage();
+            JLabel backgroundLabel = new JLabel(new ImageIcon(backgroundImage.getScaledInstance(
+                    FRAME_SIZE.width, FRAME_SIZE.height, Image.SCALE_SMOOTH)));
+            backgroundLabel.setBounds(0, 0, FRAME_SIZE.width, FRAME_SIZE.height);
+            layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+        } catch (Exception e) {
+            System.err.println("Background image not found - using fallback color");
+            layeredPane.setBackground(new Color(30, 30, 30));
+            layeredPane.setOpaque(true);
+        }
 
-        exitButton.addActionListener(e -> System.exit(0));
+        // Main Content Panel
+        JPanel contentPanel = createContentPanel();
+        contentPanel.setBounds(
+                (FRAME_SIZE.width - 400) / 2,
+                (FRAME_SIZE.height - 350) / 2,
+                400, 350
+        );
+        layeredPane.add(contentPanel, JLayeredPane.PALETTE_LAYER);
 
-        panel.add(startGameButton);
-        panel.add(highScoreButton);
-        panel.add(optionsButton);
-        panel.add(buyPremiumButton);
-        panel.add(exitButton);
-
-        frame.add(panel);
+        frame.add(layeredPane);
         frame.setVisible(true);
-
         playOpeningMusic("audio/opening.wav");
+    }
+
+    private JPanel createContentPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 1, 0, 15));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.setOpaque(false);
+
+        Font buttonFont = new Font("Arial", Font.BOLD, 18);
+        Color buttonColor = new Color(255, 255, 255, 200);
+        Color textColor = new Color(50, 50, 50);
+
+        String[] buttonTexts = {
+                "Start Game", "Highscores", "Options", "Premium", "Exit"
+        };
+
+        for (String text : buttonTexts) {
+            JButton button = createStyledButton(text, buttonFont, buttonColor, textColor);
+            button.addActionListener(e -> handleButtonAction(text));
+            panel.add(button);
+        }
+
+        return panel;
+    }
+
+    private JButton createStyledButton(String text, Font font, Color bgColor, Color textColor) {
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setComposite(AlphaComposite.SrcOver.derive(0.9f));
+                super.paintComponent(g2);
+                g2.dispose();
+            }
+        };
+
+        button.setFont(font);
+        button.setForeground(textColor);
+        button.setBackground(bgColor);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(150, 150, 150, 100), 2),
+                new EmptyBorder(10, 25, 10, 25)
+        ));
+
+        // Hover Effects
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(245, 245, 245, 220));
+                button.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(200, 200, 200), 2),
+                        new EmptyBorder(10, 25, 10, 25)
+                ));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(bgColor);
+                button.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(150, 150, 150, 100), 2),
+                        new EmptyBorder(10, 25, 10, 25)
+                ));
+            }
+        });
+
+        return button;
+    }
+
+    private void handleButtonAction(String command) {
+        switch (command) {
+            case "Start Game":
+                startGame();
+                break;
+            case "Highscores":
+                JOptionPane.showMessageDialog(frame, "Highscore feature coming soon!");
+                break;
+            case "Options":
+                JOptionPane.showMessageDialog(frame, "Options menu under development");
+                break;
+            case "Premium":
+                showPremiumDialog();
+                break;
+            case "Exit":
+                System.exit(0);
+                break;
+        }
+    }
+
+    private void showPremiumDialog() {
+        String code = JOptionPane.showInputDialog(frame,
+                "Enter premium code:", "Premium Access", JOptionPane.PLAIN_MESSAGE);
+        if (code != null && !code.isEmpty()) {
+            JOptionPane.showMessageDialog(frame,
+                    "Code validation feature under development", "Premium", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void startGame() {
         stopOpeningMusic();
-        System.out.println("Starting the game...");
+        frame.dispose();
         new Thread(() -> {
             try {
-                MainGameEngine.main(null); // Launch the Main Game Engine
+                // Replace with your game initialization logic
+                //JOptionPane.showMessageDialog(null, "Launching game...");
+                MainGameEngine.main(new String[0]);
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Failed to start the game.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Failed to start game!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }).start();
     }
@@ -73,14 +184,14 @@ public class StartMenu {
             File audioFile = new File(filePath);
             if (!audioFile.exists()) {
                 System.err.println("Audio file not found: " + filePath);
-                return; // Continue without audio
+                return;
             }
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
             openingMusic = AudioSystem.getClip();
             openingMusic.open(audioInputStream);
             openingMusic.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
-            System.err.println("Error playing opening music: " + e.getMessage());
+            System.err.println("Error playing music: " + e.getMessage());
         }
     }
 
@@ -98,16 +209,16 @@ public class StartMenu {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PROMO_CODE_FILE))) {
             Set<String> codes = new HashSet<>();
             while (codes.size() < 100) {
-                String code = "CODE" + (int) (Math.random() * 10000);
+                String code = "PREMIUM" + String.format("%04d", (int) (Math.random() * 10000));
                 codes.add(code);
             }
             for (String code : codes) {
                 writer.write(code);
                 writer.newLine();
             }
-            System.out.println("Promo codes generated.");
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Failed to generate promo codes!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
