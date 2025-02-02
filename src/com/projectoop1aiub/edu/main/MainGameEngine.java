@@ -80,11 +80,24 @@ public class MainGameEngine extends GameCore
             System.err.println("Error playing opening music: " + e.getMessage());
         }
     }
+    private void stopOpeningMusic() {
+        try {
+            if (openingMusic != null && openingMusic.isRunning()) {
+                openingMusic.stop();
+                openingMusic.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Error stopping opening music: " + e.getMessage());
+        }
+    }
     /**
      * Closes any resurces used by the GameManager.
      */
     public void stop() {
-        super.stop();
+
+        stopOpeningMusic();
+        GameOverFrame.show();
+
 
     }
 
@@ -100,7 +113,7 @@ public class MainGameEngine extends GameCore
 
         inputInitializer.mapToKey(moveLeft, KeyEvent.VK_LEFT);
         inputInitializer.mapToKey(moveRight, KeyEvent.VK_RIGHT);
-        inputInitializer.mapToKey(jump, KeyEvent.VK_SPACE);
+        inputInitializer.mapToKey(jump, KeyEvent.VK_UP);
         inputInitializer.mapToKey(exit, KeyEvent.VK_ESCAPE);
     }
 

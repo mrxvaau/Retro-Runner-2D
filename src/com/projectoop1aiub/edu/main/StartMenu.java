@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -141,10 +143,10 @@ public class StartMenu {
                 startGame();
                 break;
             case "Highscores":
-                JOptionPane.showMessageDialog(frame, "Highscore feature coming soon!");
+                ShowHighscores();
                 break;
             case "Options":
-                JOptionPane.showMessageDialog(frame, "Options menu under development");
+                showOptions();
                 break;
             case "Premium":
                 showPremiumDialog();
@@ -155,12 +157,97 @@ public class StartMenu {
         }
     }
 
+    private void ShowHighscores() {
+        // Read score from score.txt
+        String score = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("score.txt"));
+            score = reader.readLine();  // Assuming the file contains something like "Score: 42"
+            reader.close();
+        } catch (IOException e) {
+            score = "Error reading score!";
+        }
+
+        // Create a popup dialog to display the score
+        JDialog highscoreDialog = new JDialog(frame, "Highscore", true);
+        highscoreDialog.setSize(300, 150);
+        highscoreDialog.setLocationRelativeTo(frame);
+
+        // Create a label to display the score
+        JLabel scoreLabel = new JLabel("Highscore: " + score, SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Create a back button to close the dialog
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> highscoreDialog.dispose());
+
+        // Add components to the dialog
+        highscoreDialog.setLayout(new BorderLayout());
+        highscoreDialog.add(scoreLabel, BorderLayout.CENTER);
+        highscoreDialog.add(backButton, BorderLayout.SOUTH);
+
+        // Show the dialog
+        highscoreDialog.setVisible(true);
+    }
+
     private void showPremiumDialog() {
         String code = JOptionPane.showInputDialog(frame,
                 "Enter premium code:", "Premium Access", JOptionPane.PLAIN_MESSAGE);
         if (code != null && !code.isEmpty()) {
             JOptionPane.showMessageDialog(frame,
                     "Code validation feature under development", "Premium", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    private void showOptions() {
+        // Check if premiums.Xt file exists
+        File premiumFile = new File("PremiumYes.txt");
+        if (!premiumFile.exists()) {
+            JOptionPane.showMessageDialog(frame, "You are not a premium user!", "Access Denied", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Options dialog for selecting a character
+        String[] options = {"Goku", "Smurf", "Sailor"};
+        int choice = JOptionPane.showOptionDialog(frame,
+                "<html><b><font color='green'>Premium Membership Activated</font></b><br>Choose your character</html>",
+                "Access Granted", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                null, options, options[2]);
+
+        if (choice == -1) {
+            // No option selected, close dialog
+            return;
+        }
+
+        String selectedCharacter;
+        String characterFileName;
+
+        // Default to Sailor if no choice is made or an invalid choice is made
+        switch (choice) {
+            case 0: // Goku
+                selectedCharacter = "Goku";
+                characterFileName = "images/player1.png";
+                break;
+            case 1: // Smurf
+                selectedCharacter = "Smurf";
+                characterFileName = "images/player2.png";
+                break;
+            case 2: // Sailor
+            default:
+                selectedCharacter = "Sailor";
+                characterFileName = "images/player3.png";
+                break;
+        }
+
+        // Replace the player.png file with the selected character's file
+        File sourceFile = new File(characterFileName);
+        File destinationFile = new File("images/player.png");
+
+        try {
+            // Copy the selected character image to the player.png location
+            Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            JOptionPane.showMessageDialog(frame, selectedCharacter + " has been selected successfully!", "Character Selected", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Failed to select character. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
