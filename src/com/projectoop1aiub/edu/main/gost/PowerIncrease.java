@@ -5,9 +5,6 @@ import java.lang.reflect.Constructor;
 import com.projectoop1aiub.edu.physics.Anim;
 import com.projectoop1aiub.edu.physics.Charecter;
 
-/**
-    A PowerUp class is a Sprite that the player can pick up.
-*/
 public abstract class PowerIncrease extends Charecter {
 
     public PowerIncrease(Anim anim) {
@@ -29,9 +26,6 @@ public abstract class PowerIncrease extends Charecter {
     }
 
 
-    /**
-        A Star PowerUp. Gives the player points.
-    */
     public static class Star extends PowerIncrease {
         public Star(Anim anim) {
             super(anim);
@@ -39,9 +33,7 @@ public abstract class PowerIncrease extends Charecter {
     }
 
 
-    /**
-        A Music PowerUp. Changes the game music.
-    */
+
     public static class Music extends PowerIncrease {
         public Music(Anim anim) {
             super(anim);
@@ -49,9 +41,7 @@ public abstract class PowerIncrease extends Charecter {
     }
 
 
-    /**
-        A Goal PowerUp. Advances to the next map.
-    */
+
     public static class Goal extends PowerIncrease {
         public Goal(Anim anim) {
             super(anim);

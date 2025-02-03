@@ -5,16 +5,10 @@ import java.lang.reflect.Constructor;
 import com.projectoop1aiub.edu.physics.Anim;
 import com.projectoop1aiub.edu.physics.Charecter;
 
-/**
-    A Creature is a Sprite that is affected by gravity and can
-    die. It has four Animations: moving left, moving right,
-    dying on the left, and dying on the right.
-*/
+
 public abstract class Obstacles extends Charecter {
 
-    /**
-        Amount of time to go from STATE_DYING to STATE_DEAD.
-    */
+
     private static final int DIE_TIME = 1000;
 
     public static final int STATE_NORMAL = 0;
@@ -28,9 +22,7 @@ public abstract class Obstacles extends Charecter {
     private int state;
     private long stateTime;
 
-    /**
-        Creates a new Creature with the specified Animations.
-    */
+
     public Obstacles(Anim left, Anim right,
                      Anim deadLeft, Anim deadRight)
     {
@@ -61,19 +53,11 @@ public abstract class Obstacles extends Charecter {
         }
     }
 
-
-    /**
-        Gets the maximum speed of this Creature.
-    */
     public float getMaxSpeed() {
         return 0;
     }
 
 
-    /**
-        Wakes up the creature when the Creature first appears
-        on screen. Normally, the creature starts moving left.
-    */
     public void wakeUp() {
         if (getState() == STATE_NORMAL && getVelocityX() == 0) {
             setVelocityX(-getMaxSpeed());
@@ -81,19 +65,12 @@ public abstract class Obstacles extends Charecter {
     }
 
 
-    /**
-        Gets the state of this Creature. The state is either
-        STATE_NORMAL, STATE_DYING, or STATE_DEAD.
-    */
+
     public int getState() {
         return state;
     }
 
 
-    /**
-        Sets the state of this Creature to STATE_NORMAL,
-        STATE_DYING, or STATE_DEAD.
-    */
     public void setState(int state) {
         if (this.state != state) {
             this.state = state;
@@ -106,43 +83,27 @@ public abstract class Obstacles extends Charecter {
     }
 
 
-    /**
-        Checks if this creature is alive.
-    */
+
     public boolean isAlive() {
         return (state == STATE_NORMAL);
     }
 
 
-    /**
-        Checks if this creature is flying.
-    */
     public boolean isFlying() {
         return false;
     }
 
 
-    /**
-        Called before update() if the creature collided with a
-        tile horizontally.
-    */
+
     public void collideHorizontal() {
         setVelocityX(-getVelocityX());
     }
 
-
-    /**
-        Called before update() if the creature collided with a
-        tile vertically.
-    */
     public void collideVertical() {
         setVelocityY(0);
     }
 
 
-    /**
-        Updates the animaton for this creature.
-    */
     public void update(long elapsedTime) {
         // select the correct Animation
         Anim newAnim = anim;

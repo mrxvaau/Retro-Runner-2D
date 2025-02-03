@@ -2,9 +2,7 @@ package com.projectoop1aiub.edu.main.gost;
 
 import com.projectoop1aiub.edu.physics.Anim;
 
-/**
-    The Player.
-*/
+
 public class Player extends Obstacles
 {
 
@@ -24,7 +22,7 @@ public class Player extends Obstacles
 
 
     public void collideVertical() {
-        // check if collided with ground
+
         if (getVelocityY() > 0) {
             onGround = true;
         }
@@ -33,7 +31,7 @@ public class Player extends Obstacles
 
 
     public void setY(float y) {
-        // check if falling
+
         if (Math.round(y) > Math.round(getY())) {
             onGround = false;
         }
@@ -46,10 +44,7 @@ public class Player extends Obstacles
     }
 
 
-    /**
-        Makes the player jump if the player is on the ground or
-        if forceJump is true.
-    */
+
     public void jump(boolean forceJump) {
         if (onGround || forceJump) {
             onGround = false;

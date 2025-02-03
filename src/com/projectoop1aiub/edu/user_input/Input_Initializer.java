@@ -239,36 +239,33 @@ public class Input_Initializer implements KeyListener, MouseListener,
     }
 
 
-    // from the KeyListener interface
+
     public void keyPressed(KeyEvent e) {
         GameReflex gameReflex = getKeyAction(e);
         if (gameReflex != null) {
             gameReflex.press();
         }
-        // make sure the key isn't processed for anything else
+
         e.consume();
     }
 
 
-    // from the KeyListener interface
     public void keyReleased(KeyEvent e) {
         GameReflex gameReflex = getKeyAction(e);
         if (gameReflex != null) {
             gameReflex.release();
         }
-        // make sure the key isn't processed for anything else
+
         e.consume();
     }
 
 
-    // from the KeyListener interface
     public void keyTyped(KeyEvent e) {
-        // make sure the key isn't processed for anything else
+
         e.consume();
     }
 
 
-    // from the MouseListener interface
     public void mousePressed(MouseEvent e) {
         GameReflex gameReflex = getMouseButtonAction(e);
         if (gameReflex != null) {
@@ -276,8 +273,6 @@ public class Input_Initializer implements KeyListener, MouseListener,
         }
     }
 
-
-    // from the MouseListener interface
     public void mouseReleased(MouseEvent e) {
         GameReflex gameReflex = getMouseButtonAction(e);
         if (gameReflex != null) {
@@ -286,31 +281,28 @@ public class Input_Initializer implements KeyListener, MouseListener,
     }
 
 
-    // from the MouseListener interface
+
     public void mouseClicked(MouseEvent e) {
         // do nothing
     }
 
-
-    // from the MouseListener interface
     public void mouseEntered(MouseEvent e) {
         mouseMoved(e);
     }
 
 
-    // from the MouseListener interface
     public void mouseExited(MouseEvent e) {
         mouseMoved(e);
     }
 
 
-    // from the MouseMotionListener interface
+
     public void mouseDragged(MouseEvent e) {
         mouseMoved(e);
     }
 
 
-    // from the MouseMotionListener interface
+
     public synchronized void mouseMoved(MouseEvent e) {
         // this event is from re-centering the mouse - ignore it
         if (isRecentering &&
@@ -336,7 +328,6 @@ public class Input_Initializer implements KeyListener, MouseListener,
     }
 
 
-    // from the MouseWheelListener interface
     public void mouseWheelMoved(MouseWheelEvent e) {
         mouseHelper(MOUSE_WHEEL_UP, MOUSE_WHEEL_DOWN,
             e.getWheelRotation());

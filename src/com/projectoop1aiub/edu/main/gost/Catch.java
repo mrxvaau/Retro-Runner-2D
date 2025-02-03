@@ -2,9 +2,7 @@ package com.projectoop1aiub.edu.main.gost;
 
 import com.projectoop1aiub.edu.physics.Anim;
 
-/**
-    A Grub is a Creature that moves slowly on the ground.
-*/
+
 public class Catch extends Obstacles {
 
     public Catch(Anim left, Anim right,
