@@ -145,7 +145,7 @@ public class StartMenu {
             case "Highscores":
                 ShowHighscores();
                 break;
-            case "Change characters ":
+            case "Options":
                 showOptions();
                 break;
             case "Premium":
