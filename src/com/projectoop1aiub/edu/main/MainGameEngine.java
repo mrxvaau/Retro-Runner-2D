@@ -19,9 +19,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-/**
- * GameManager manages all parts of the game.
- */
+
 public class MainGameEngine extends GameCore
 {
 
@@ -90,9 +88,7 @@ public class MainGameEngine extends GameCore
             System.err.println("Error stopping opening music: " + e.getMessage());
         }
     }
-    /**
-     * Closes any resurces used by the GameManager.
-     */
+
     public void stop() {
 
         stopOpeningMusic();
@@ -160,18 +156,12 @@ public class MainGameEngine extends GameCore
     }
 
 
-    /**
-     * Gets the current map.
-     */
+
     public Map getMap() {
         return map;
     }
 
-    /**
-     * Gets the tile that a Sprites collides with. Only the
-     * Sprite's X or Y should be changed, not both. Returns null
-     * if no collision is detected.
-     */
+
     public Point getTileCollision(Charecter charecter, float newX, float newY)
     {
         float fromX = Math.min(charecter.getX(), newX);
@@ -204,11 +194,7 @@ public class MainGameEngine extends GameCore
     }
 
 
-    /**
-     * Checks if two Sprites collide with one another. Returns
-     * false if the two Sprites are the same. Returns false if
-     * one of the Sprites is a Creature that is not alive.
-     */
+
     public boolean isCollision(Charecter s1, Charecter s2) {
         // if the Sprites are the same, return false
         if (s1 == s2) {
@@ -237,10 +223,7 @@ public class MainGameEngine extends GameCore
     }
 
 
-    /**
-     * Gets the Sprite that collides with the specified Sprite,
-     * or null if no Sprite collides with the specified Sprite.
-     */
+
     public Charecter getSpriteCollision(Charecter charecter) {
 
         // run through the list of Sprites
@@ -258,10 +241,7 @@ public class MainGameEngine extends GameCore
     }
 
 
-    /**
-     * Updates Animation, position, and velocity of all Sprites
-     * in the current map.
-     */
+
     public void update(long elapsedTime) {
         Obstacles player = (Obstacles)map.getPlayer();
 
@@ -296,11 +276,6 @@ public class MainGameEngine extends GameCore
         }
     }
 
-
-    /**
-     * Updates the creature, applying gravity for creatures that
-     * aren't flying, and checks collisions.
-     */
     private void updateCreature(Obstacles obstacles,
                                 long elapsedTime) {
 
@@ -361,11 +336,7 @@ public class MainGameEngine extends GameCore
     }
 
 
-    /**
-     * Checks for Player collision with other Sprites. If
-     * canKill is true, collisions with Creatures will kill
-     * them.
-     */
+
     public void checkPlayerCollision(Player player,
                                      boolean canKill) {
         if (!player.isAlive()) {
@@ -400,10 +371,7 @@ public class MainGameEngine extends GameCore
     }
 
 
-    /**
-     * Gives the player the speicifed power up and removes it
-     * from the map.
-     */
+
     public void acquirePowerUp(PowerIncrease powerIncrease) {
         // remove it from the map
         map.removeSprite(powerIncrease);

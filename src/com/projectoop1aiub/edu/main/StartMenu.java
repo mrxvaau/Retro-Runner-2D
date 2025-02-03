@@ -145,7 +145,7 @@ public class StartMenu {
             case "Highscores":
                 ShowHighscores();
                 break;
-            case "Options":
+            case "Change characters ":
                 showOptions();
                 break;
             case "Premium":
@@ -162,42 +162,76 @@ public class StartMenu {
         String score = "";
         try {
             BufferedReader reader = new BufferedReader(new FileReader("score.txt"));
-            score = reader.readLine();  // Assuming the file contains something like "Score: 42"
+            score = reader.readLine();
             reader.close();
         } catch (IOException e) {
             score = "Error reading score!";
         }
 
-        // Create a popup dialog to display the score
+
         JDialog highscoreDialog = new JDialog(frame, "Highscore", true);
         highscoreDialog.setSize(300, 150);
         highscoreDialog.setLocationRelativeTo(frame);
 
-        // Create a label to display the score
+
         JLabel scoreLabel = new JLabel("Highscore: " + score, SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
-        // Create a back button to close the dialog
+
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> highscoreDialog.dispose());
 
-        // Add components to the dialog
+
         highscoreDialog.setLayout(new BorderLayout());
         highscoreDialog.add(scoreLabel, BorderLayout.CENTER);
         highscoreDialog.add(backButton, BorderLayout.SOUTH);
 
-        // Show the dialog
+
         highscoreDialog.setVisible(true);
     }
 
-    private void showPremiumDialog() {
+    public void showPremiumDialog() {
         String code = JOptionPane.showInputDialog(frame,
                 "Enter premium code:", "Premium Access", JOptionPane.PLAIN_MESSAGE);
+
         if (code != null && !code.isEmpty()) {
-            JOptionPane.showMessageDialog(frame,
-                    "Code validation feature under development", "Premium", JOptionPane.INFORMATION_MESSAGE);
+            try {
+
+                BufferedReader reader = new BufferedReader(new FileReader("promo_codes.txt"));
+                String line;
+                boolean isPremium = false;
+
+                while ((line = reader.readLine()) != null) {
+                    if (line.trim().equals(code)) {
+                        isPremium = true;
+                        break;
+                    }
+                }
+                reader.close();
+
+                if (isPremium) {
+
+                    JOptionPane.showMessageDialog(frame,
+                            "You are a premium user!", "Premium", JOptionPane.INFORMATION_MESSAGE);
+
+
+                    File premiumFile = new File("PremiumYes.txt");
+                    if (!premiumFile.exists()) {
+                        premiumFile.createNewFile();
+                    }
+                } else {
+
+                    JOptionPane.showMessageDialog(frame,
+                            "Invalid code. Please try again.", "Premium", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e) {
+
+                JOptionPane.showMessageDialog(frame,
+                        "An error occurred while processing the code.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
+
     private void showOptions() {
         // Check if premiums.Xt file exists
         File premiumFile = new File("PremiumYes.txt");
@@ -214,14 +248,14 @@ public class StartMenu {
                 null, options, options[2]);
 
         if (choice == -1) {
-            // No option selected, close dialog
+
             return;
         }
 
         String selectedCharacter;
         String characterFileName;
 
-        // Default to Sailor if no choice is made or an invalid choice is made
+
         switch (choice) {
             case 0: // Goku
                 selectedCharacter = "Goku";
@@ -238,7 +272,6 @@ public class StartMenu {
                 break;
         }
 
-        // Replace the player.png file with the selected character's file
         File sourceFile = new File(characterFileName);
         File destinationFile = new File("images/player.png");
 

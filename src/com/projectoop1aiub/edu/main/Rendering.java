@@ -15,11 +15,7 @@ import com.projectoop1aiub.edu.main.gost.Player;
 import com.projectoop1aiub.edu.main.gost.PowerIncrease;
 
 
-/**
-    The ResourceManager class loads and manages tile Images and
-    "host" Sprites used in the game. Game Sprites are cloned from
-    "host" Sprites.
-*/
+
 public class Rendering
 {
     private ArrayList tiles;
@@ -34,10 +30,7 @@ public class Rendering
     private Charecter grubCharecter;
     private Charecter flyCharecter;
 
-    /**
-        Creates a new ResourceManager with the specified
-        GraphicsConfiguration.
-    */
+
     public Rendering(GraphicsConfiguration gc)
     {
         this.gc = gc;
@@ -47,9 +40,7 @@ public class Rendering
     }
 
 
-    /**
-        Gets an image from the images/ directory.
-    */
+
     public Image loadImage(String name) 
     {
         String filename = "images/" + name;
@@ -72,7 +63,7 @@ public class Rendering
     private Image getScaledImage(Image image, float x, float y) 
     {
 
-        // set up the transform
+
         AffineTransform transform = new AffineTransform();
         transform.scale(x, y);
         transform.translate(
@@ -225,15 +216,10 @@ public class Rendering
     }
 
 
-    // -----------------------------------------------------------
-    // code for loading gost and images
-    // -----------------------------------------------------------
-
 
     public void loadTileImages()
     {
-        // keep looking for tile A,B,C, etc. this makes it
-        // easy to drop new tiles in the images/ directory
+
         tiles = new ArrayList();
         char ch = 'A';
         
