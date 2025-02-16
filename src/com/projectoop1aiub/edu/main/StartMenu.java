@@ -67,7 +67,7 @@ public class StartMenu {
 
         frame.add(layeredPane);
         frame.setVisible(true);
-        playOpeningMusic("audio/opening.wav");
+        playOpeningMusic();
     }
 
     private JPanel createContentPanel() {
@@ -86,7 +86,7 @@ public class StartMenu {
 
         for (String text : buttonTexts) {
             JButton button = createStyledButton(text, buttonFont, buttonColor, textColor);
-            button.addActionListener(e -> handleButtonAction(text));
+            button.addActionListener(_ -> handleButtonAction(text));
             panel.add(button);
         }
 
@@ -113,7 +113,7 @@ public class StartMenu {
                 new EmptyBorder(10, 25, 10, 25)
         ));
 
-        // Hover Effects
+
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -159,7 +159,7 @@ public class StartMenu {
 
     private void ShowHighscores() {
         // Read score from score.txt
-        String score = "";
+        String score;
         try {
             BufferedReader reader = new BufferedReader(new FileReader("score.txt"));
             score = reader.readLine();
@@ -179,7 +179,7 @@ public class StartMenu {
 
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> highscoreDialog.dispose());
+        backButton.addActionListener(_ -> highscoreDialog.dispose());
 
 
         highscoreDialog.setLayout(new BorderLayout());
@@ -233,7 +233,7 @@ public class StartMenu {
     }
 
     private void showOptions() {
-        // Check if premiums.Xt file exists
+
         File premiumFile = new File("PremiumYes.txt");
         if (!premiumFile.exists()) {
             JOptionPane.showMessageDialog(frame, "You are not a premium user!", "Access Denied", JOptionPane.ERROR_MESSAGE);
@@ -253,30 +253,27 @@ public class StartMenu {
         }
 
         String selectedCharacter;
-        String characterFileName;
-
-
-        switch (choice) {
-            case 0: // Goku
+        String characterFileName = switch (choice) {
+            case 0 -> {
                 selectedCharacter = "Goku";
-                characterFileName = "images/player1.png";
-                break;
-            case 1: // Smurf
+                yield "images/player1.png";
+            }
+            case 1 -> {
                 selectedCharacter = "Smurf";
-                characterFileName = "images/player2.png";
-                break;
-            case 2: // Sailor
-            default:
+                yield "images/player2.png";
+            } // Sailor
+            default -> {
                 selectedCharacter = "Sailor";
-                characterFileName = "images/player3.png";
-                break;
-        }
+                yield "images/player3.png";
+            }
+        };
+
 
         File sourceFile = new File(characterFileName);
         File destinationFile = new File("images/player.png");
 
         try {
-            // Copy the selected character image to the player.png location
+
             Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             JOptionPane.showMessageDialog(frame, selectedCharacter + " has been selected successfully!", "Character Selected", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
@@ -289,8 +286,7 @@ public class StartMenu {
         frame.dispose();
         new Thread(() -> {
             try {
-                // Replace with your game initialization logic
-                //JOptionPane.showMessageDialog(null, "Launching game...");
+
                 MainGameEngine.main(new String[0]);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -299,11 +295,11 @@ public class StartMenu {
         }).start();
     }
 
-    private void playOpeningMusic(String filePath) {
+    private void playOpeningMusic() {
         try {
-            File audioFile = new File(filePath);
+            File audioFile = new File("audio/opening.wav");
             if (!audioFile.exists()) {
-                System.err.println("Audio file not found: " + filePath);
+                System.err.println("Audio file not found: " + "audio/opening.wav");
                 return;
             }
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);

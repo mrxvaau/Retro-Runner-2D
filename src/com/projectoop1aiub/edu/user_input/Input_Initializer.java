@@ -304,7 +304,7 @@ public class Input_Initializer implements KeyListener, MouseListener,
 
 
     public synchronized void mouseMoved(MouseEvent e) {
-        // this event is from re-centering the mouse - ignore it
+
         if (isRecentering &&
             centerLocation.x == e.getX() &&
             centerLocation.y == e.getY())

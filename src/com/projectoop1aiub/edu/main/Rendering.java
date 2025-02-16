@@ -22,7 +22,7 @@ public class Rendering
     public int currentMap;
     private GraphicsConfiguration gc;
 
-    // host gost used for cloning
+
     private Charecter playerCharecter;
     private Charecter musicCharecter;
     private Charecter coinCharecter;
@@ -70,13 +70,13 @@ public class Rendering
             (x-1) * image.getWidth(null) / 2,
             (y-1) * image.getHeight(null) / 2);
 
-        // create a transparent (not translucent) image
+
         Image newImage = gc.createCompatibleImage(
             image.getWidth(null),
             image.getHeight(null),
             Transparency.BITMASK);
 
-        // draw the transformed image
+
         Graphics2D g = (Graphics2D)newImage.getGraphics();
         g.drawImage(image, transform, null);
         g.dispose();
@@ -131,25 +131,25 @@ public class Rendering
         int width = 0;
         int height = 0;
 
-        // read every line in the text file into the list
+
         BufferedReader reader = new BufferedReader(
             new FileReader(filename));
         while (true) {
             String line = reader.readLine();
-            // no more lines to read
+
             if (line == null) {
                 reader.close();
                 break;
             }
 
-            // add every line except for comments
+
             if (!line.startsWith("#")) {
                 lines.add(line);
                 width = Math.max(width, line.length());
             }
         }
 
-        // parse the lines to create a TileEngine
+
         height = lines.size();
         Map newMap = new Map(width, height);
         for (int y=0; y<height; y++) {
@@ -157,13 +157,13 @@ public class Rendering
             for (int x=0; x<line.length(); x++) {
                 char ch = line.charAt(x);
 
-                // check if the char represents tile A, B, C etc.
+
                 int tile = ch - 'A';
                 if (tile >= 0 && tile < tiles.size()) {
                     newMap.setTile(x, y, (Image)tiles.get(tile));
                 }
 
-                // check if the char represents a sprite
+
                 else if (ch == 'o') {
                     addSprite(newMap, coinCharecter, x, y);
                 }
@@ -182,7 +182,7 @@ public class Rendering
             }
         }
 
-        // add the player to the map
+
         Charecter player = (Charecter) playerCharecter.clone();
         player.setX(GroundRendering.tilesToPixels(3));
         player.setY(lines.size());
@@ -196,21 +196,20 @@ public class Rendering
                            Charecter hostCharecter, int tileX, int tileY)
     {
         if (hostCharecter != null) {
-            // clone the sprite from the "host"
+
             Charecter charecter = (Charecter) hostCharecter.clone();
 
-            // center the sprite
             charecter.setX(
                 GroundRendering.tilesToPixels(tileX) +
                 (GroundRendering.tilesToPixels(1) -
                 charecter.getWidth()) / 2);
 
-            // bottom-justify the sprite
+
             charecter.setY(
                 GroundRendering.tilesToPixels(tileY + 1) -
                 charecter.getHeight());
 
-            // add it to the map
+
             map.addSprite(charecter);
         }
     }
@@ -242,7 +241,7 @@ public class Rendering
 
         Image[][] images = new Image[4][];
 
-        // load left-facing images
+
         images[0] = new Image[] {
             loadImage("player.png"),         
             loadImage("fly1.png"),
@@ -258,15 +257,15 @@ public class Rendering
         
         for (int i=0; i<images[0].length; i++) 
         {
-            // right-facing images
+
             images[1][i] = getMirrorImage(images[0][i]);
-            // left-facing "dead" images
+
             images[2][i] = getFlippedImage(images[0][i]);
-            // right-facing "dead" images
+
             images[3][i] = getFlippedImage(images[1][i]);
         }
 
-        // create creature animations
+
         Anim[] playerAnim = new Anim[4];
         Anim[] flyAnim = new Anim[4];
         Anim[] grubAnim = new Anim[4];
@@ -278,7 +277,7 @@ public class Rendering
             grubAnim[i] = createGrubAnim (images[i][4], images[i][5]);
         }
 
-        // create creature gost
+
         playerCharecter = new Player(playerAnim[0], playerAnim[1],playerAnim[2], playerAnim[3]);
         flyCharecter = new Fly(flyAnim[0], flyAnim[1],flyAnim[2], flyAnim[3]);
         grubCharecter = new Catch(grubAnim[0], grubAnim[1],grubAnim[2], grubAnim[3]);
@@ -316,12 +315,12 @@ public class Rendering
 
     private void loadPowerUpSprites() 
     {
-        // create "goal" sprite
+
         Anim anim = new Anim();
         anim.addFrame(loadImage("heart.png"), 150);
         goalCharecter = new PowerIncrease.Goal(anim);
 
-        // create "star" sprite
+
         anim = new Anim();
         anim.addFrame(loadImage("coin1.png"),250 ) ;  
         anim.addFrame(loadImage("coin2.png"),250);
@@ -330,7 +329,7 @@ public class Rendering
         anim.addFrame(loadImage("coin5.png"),250);
         coinCharecter = new PowerIncrease.Star(anim);
 
-        // create "music" sprite
+
         anim = new Anim();
         anim.addFrame(loadImage("music1.png"), 150);
         anim.addFrame(loadImage("music2.png"), 150);

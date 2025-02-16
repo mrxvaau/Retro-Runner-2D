@@ -20,6 +20,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 
+@SuppressWarnings("ALL")
 public class MainGameEngine extends GameCore
 {
 
@@ -30,10 +31,9 @@ public class MainGameEngine extends GameCore
 
     public static final float GRAVITY = 0.002f;
 
-    private Point pointCache = new Point();
+    private final Point pointCache = new Point();
     private Map map;
     private Rendering rendering;
-    private Input_Initializer inputInitializer;
     private GroundRendering drawer;
 
     private GameReflex moveLeft;
@@ -60,14 +60,14 @@ public class MainGameEngine extends GameCore
 
         // load first map
         map = rendering.loadNextMap();
-        playOpeningMusic("audio/background_music_loop.wav");
+        playOpeningMusic();
     }
 
-    private void playOpeningMusic(String filePath) {
+    private void playOpeningMusic() {
         try {
-            File audioFile = new File(filePath);
+            File audioFile = new File("audio/background_music_loop.wav");
             if (!audioFile.exists()) {
-                System.err.println("Audio file not found: " + filePath);
+                System.err.println("Audio file not found: " + "audio/background_music_loop.wav");
                 return; // Continue without audio
             }
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
@@ -92,7 +92,7 @@ public class MainGameEngine extends GameCore
     public void stop() {
 
         stopOpeningMusic();
-        GameOverFrame.show();
+        GameOverWindow.show();
 
 
     }
@@ -104,7 +104,7 @@ public class MainGameEngine extends GameCore
         jump = new GameReflex("jump", GameReflex.DETECT_INITAL_PRESS_ONLY);
         exit = new GameReflex("exit", GameReflex.DETECT_INITAL_PRESS_ONLY);
 
-        inputInitializer = new Input_Initializer(screen.getFullScreenWindow());
+        Input_Initializer inputInitializer = new Input_Initializer(screen.getFullScreenWindow());
         inputInitializer.setCursor(Input_Initializer.INVISIBLE_CURSOR);
 
         inputInitializer.mapToKey(moveLeft, KeyEvent.VK_LEFT);
@@ -114,7 +114,7 @@ public class MainGameEngine extends GameCore
     }
 
 
-    private void checkInput(long elapsedTime)
+    private void checkInput()
     {
 
         if (exit.isPressed()) {
@@ -156,12 +156,6 @@ public class MainGameEngine extends GameCore
     }
 
 
-
-    public Map getMap() {
-        return map;
-    }
-
-
     public Point getTileCollision(Charecter charecter, float newX, float newY)
     {
         float fromX = Math.min(charecter.getX(), newX);
@@ -196,7 +190,7 @@ public class MainGameEngine extends GameCore
 
 
     public boolean isCollision(Charecter s1, Charecter s2) {
-        // if the Sprites are the same, return false
+
         if (s1 == s2) {
             return false;
         }
@@ -209,13 +203,13 @@ public class MainGameEngine extends GameCore
             return false;
         }
 
-        // get the pixel location of the Sprites
+
         int s1x = Math.round(s1.getX());
         int s1y = Math.round(s1.getY());
         int s2x = Math.round(s2.getX());
         int s2y = Math.round(s2.getY());
 
-        // check if the two gost' boundaries intersect
+
         return (s1x < s2x + s2.getWidth() &&
                 s2x < s1x + s1.getWidth() &&
                 s1y < s2y + s2.getHeight() &&
@@ -226,12 +220,12 @@ public class MainGameEngine extends GameCore
 
     public Charecter getSpriteCollision(Charecter charecter) {
 
-        // run through the list of Sprites
+
         Iterator i = map.getSprites();
         while (i.hasNext()) {
             Charecter otherCharecter = (Charecter)i.next();
             if (isCollision(charecter, otherCharecter)) {
-                // collision found, return the Sprite
+
                 return otherCharecter;
             }
         }
@@ -246,25 +240,22 @@ public class MainGameEngine extends GameCore
         Obstacles player = (Obstacles)map.getPlayer();
 
 
-        // player is dead! start map over
+
         if (player.getState() == Obstacles.STATE_DEAD) {
             map = rendering.reloadMap();
             return;
         }
 
-        // get keyboard/mouse user_input
-        checkInput(elapsedTime);
 
-        // update player
+        checkInput();
+
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
 
-        // update other gost
         Iterator i = map.getSprites();
         while (i.hasNext()) {
             Charecter charecter = (Charecter)i.next();
-            if (charecter instanceof Obstacles) {
-                Obstacles obstacles = (Obstacles) charecter;
+            if (charecter instanceof Obstacles obstacles) {
                 if (obstacles.getState() == Obstacles.STATE_DEAD) {
                     i.remove();
                 } else {
@@ -279,7 +270,7 @@ public class MainGameEngine extends GameCore
     private void updateCreature(Obstacles obstacles,
                                 long elapsedTime) {
 
-        // apply gravity
+
         if (!obstacles.isFlying()) {
             obstacles.setVelocityY(obstacles.getVelocityY() +
                     GRAVITY * elapsedTime);
@@ -294,7 +285,7 @@ public class MainGameEngine extends GameCore
         if (tile == null) {
             obstacles.setX(newX);
         } else {
-            // line up with the tile boundary
+
             if (dx > 0) {
                 obstacles.setX(
                         GroundRendering.tilesToPixels(tile.x) -
@@ -309,7 +300,7 @@ public class MainGameEngine extends GameCore
             checkPlayerCollision((Player) obstacles, false);
         }
 
-        // change y
+
         float dy = obstacles.getVelocityY();
         float oldY = obstacles.getY();
         float newY = oldY + dy * elapsedTime;
@@ -347,8 +338,7 @@ public class MainGameEngine extends GameCore
         Charecter collisionCharecter = getSpriteCollision(player);
         if (collisionCharecter instanceof PowerIncrease) {
             acquirePowerUp((PowerIncrease) collisionCharecter);
-        } else if (collisionCharecter instanceof Obstacles) {
-            Obstacles badguy = (Obstacles) collisionCharecter;
+        } else if (collisionCharecter instanceof Obstacles badguy) {
             if (canKill) {
                 // kill the badguy and make player bounce
                 badguy.setState(Obstacles.STATE_DYING);
@@ -373,11 +363,11 @@ public class MainGameEngine extends GameCore
 
 
     public void acquirePowerUp(PowerIncrease powerIncrease) {
-        // remove it from the map
+
         map.removeSprite(powerIncrease);
 
         if (powerIncrease instanceof PowerIncrease.Star) {
-            // do something here, like give the player points
+
             collectedStars++;
             if(collectedStars==100)
             {
@@ -386,10 +376,10 @@ public class MainGameEngine extends GameCore
             }
 
         } else if (powerIncrease instanceof PowerIncrease.Music) {
-            // change the music
+
 
         } else if (powerIncrease instanceof PowerIncrease.Goal) {
-            // advance to next map
+
 
             map = rendering.loadNextMap();
 
