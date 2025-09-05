@@ -243,7 +243,7 @@ public class Rendering
 
 
         images[0] = new Image[] {
-            loadImage("player.png"),         
+            loadImage("player.PNG"),         
             loadImage("fly1.png"),
             loadImage("fly2.png"),
             loadImage("fly3.png"),
@@ -322,11 +322,11 @@ public class Rendering
 
 
         anim = new Anim();
-        anim.addFrame(loadImage("coin1.png"),250 ) ;  
-        anim.addFrame(loadImage("coin2.png"),250);
-        anim.addFrame(loadImage("coin3.png"),250);
-        anim.addFrame(loadImage("coin4.png"),250);
-        anim.addFrame(loadImage("coin5.png"),250);
+        anim.addFrame(loadImage("coin1.PNG"),250 ) ;  
+        anim.addFrame(loadImage("coin2.PNG"),250);
+        anim.addFrame(loadImage("coin3.PNG"),250);
+        anim.addFrame(loadImage("coin4.PNG"),250);
+        anim.addFrame(loadImage("coin5.PNG"),250);
         coinCharecter = new PowerIncrease.Star(anim);
 
 
@@ -336,7 +336,6 @@ public class Rendering
         anim.addFrame(loadImage("music3.png"), 150);
         anim.addFrame(loadImage("music2.png"), 150);
         musicCharecter = new PowerIncrease.Music(anim);
-        musicCharecter =new PowerIncrease.Music(anim);
     }
 
 }

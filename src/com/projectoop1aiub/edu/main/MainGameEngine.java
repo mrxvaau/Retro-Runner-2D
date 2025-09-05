@@ -56,7 +56,7 @@ public class MainGameEngine extends GameCore
 
         // load resources
         drawer = new GroundRendering();
-        drawer.setBackground(rendering.loadImage("background.jpg"));
+        drawer.setBackground(rendering.loadImage("background.JPG"));
 
         // load first map
         map = rendering.loadNextMap();

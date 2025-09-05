@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class StartMenu {
     private static final String PROMO_CODE_FILE = "promo_codes.txt";
-    private static final String BACKGROUND_PATH = "images/background.jpg";
+    private static final String BACKGROUND_PATH = "images/background.JPG";
     private static final Dimension FRAME_SIZE = new Dimension(960, 540); // Half of 1920x1080
     private static boolean isPromoCodesGenerated = false;
     private Clip openingMusic;
@@ -256,21 +256,21 @@ public class StartMenu {
         String characterFileName = switch (choice) {
             case 0 -> {
                 selectedCharacter = "Goku";
-                yield "images/player1.png";
+                yield "images/player1.PNG";
             }
             case 1 -> {
                 selectedCharacter = "Smurf";
-                yield "images/player2.png";
+                yield "images/player2.PNG";
             } // Sailor
             default -> {
                 selectedCharacter = "Sailor";
-                yield "images/player3.png";
+                yield "images/player3.PNG";
             }
         };
 
 
         File sourceFile = new File(characterFileName);
-        File destinationFile = new File("images/player.png");
+        File destinationFile = new File("images/player.PNG");
 
         try {
 
