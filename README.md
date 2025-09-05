@@ -1,6 +1,6 @@
-# Arcade Super Mario-Type Game
+# Retro Runner 2D
 
-Welcome to the **Arcade Super Mario-Type Game**, a fun and engaging 2D arcade game built using Java! This project is designed to replicate the classic Super Mario experience with custom features and levels. It’s a tile-based game where players can explore, jump, and collect items to achieve the highest score. The project is completely open-source and can be used, modified, and shared freely without any restrictions.
+Welcome to the **Retro Runner 2D**, a fun and engaging 2D arcade game built using Java! This project is designed to replicate the classic Super Mario experience with custom features and levels. It’s a tile-based game where players can explore, jump, and collect items to achieve the highest score. The project is completely open-source and can be used, modified, and shared freely without any restrictions.
 
 ---
 
@@ -26,12 +26,12 @@ Follow these steps to get the game running on your system:
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://https://github.com/mrxvaau/02564-OOP1_Project_Arcade_Java_2D_Game
+   git clone https://https://github.com/mrxvaau/Retro-Runner-2D
    ```
 
 2. **Navigate to the Project Directory**:
    ```bash
-   cd 02564-OOP1_Project_Arcade_Java_2D_Game
+   cd Retro-Runner-2D
    ```
 
 3. **Compile the Source Code**:
